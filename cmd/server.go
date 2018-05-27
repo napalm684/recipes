@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	stdhttp "net/http"
 
@@ -15,6 +16,13 @@ var (
 
 func main() {
 	//recipeService = &psql.UserService{DB: db}
+
+	db, err := sql.Open("sqlite3", "./recipes_app.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	server := http.NewServer(recipeService)
 	log.Fatal(stdhttp.ListenAndServe(":3000", server))
 }
