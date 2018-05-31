@@ -7,15 +7,23 @@ CREATE TABLE Recipes(
     Name TEXT,
     Description TEXT,
     DurationMinutes DECIMAL(5,2),
-    Source TEXT
+    Source TEXT,
+	Serves INTEGER
 );
 
 CREATE TABLE Ingredients (
-    	Id       INTEGER PRIMARY KEY,
+	Id       INTEGER PRIMARY KEY,
 	ItemName TEXT,
 	RecipeID INTEGER,
 	Quantity DECIMAL(5,2),
 	UOMID    INTEGER
+);
+
+CREATE TABLE Steps (
+	Id INTEGER PRIMARY KEY,
+	StepText TEXT,
+	SortOrder INTEGER,
+	RecipeID INTEGER
 );
 
 CREATE TABLE UnitsOfMeasure (

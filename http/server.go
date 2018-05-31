@@ -25,7 +25,10 @@ func NewServer(rs repositories.RecipeService) http.Handler {
 // JSONServer will construct a server, apply all of the necessary routes,
 // then return an http.Handler for the server.
 func JSONServer(rs repositories.RecipeService) http.Handler {
-	rh := &RecipeHandler{}
+	rh := &RecipeHandler{
+		recipeService: rs,
+		renderJSON:    renderJSON,
+	}
 	s := server{
 		recipes: rh,
 		router:  mux.NewRouter(),

@@ -10,12 +10,18 @@ import (
 // methods.
 type RecipeHandler struct {
 	recipeService repositories.RecipeService
+	renderJSON    func(w http.ResponseWriter, data interface{}, status int)
 }
 
 // All lists all recipes in the system.
 func (h *RecipeHandler) All(w http.ResponseWriter, r *http.Request) {
 	// Query for all recipes.
-	// recipes, err := h.recipeService.All()
+	recipes, _ := h.recipeService.All() //TODO Error handling
+	if len(recipes) == 0 {
+		h.renderJSON(w, recipes, 204)
+		return
+	}
+	h.renderJSON(w, recipes, 200)
 	// if err != nil {
 	// 	h.renderIndexError(w, r, err)
 	// 	return
@@ -25,5 +31,4 @@ func (h *RecipeHandler) All(w http.ResponseWriter, r *http.Request) {
 	// 	h.renderIndexError(w, r, err)
 	// 	return
 	// }
-	w.Write(([]byte)("All called!"))
 }
