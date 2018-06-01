@@ -8,4 +8,5 @@ import (
 // recipe data store interactions.
 type RecipeService interface {
 	All() ([]domain.Recipe, error)
+	Get(id int) (domain.Recipe, error)
 }
