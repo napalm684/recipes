@@ -25,7 +25,7 @@ func main() {
 	dir := path.Dir(ex)
 	log.Print(dir)
 
-	db, err := sql.Open("sqlite3", "./recipes_app.db")
+	db, err := sql.Open("sqlite3", "./recipes_app.db?_mutex=full")
 	if err != nil {
 		log.Fatal(err)
 	}
