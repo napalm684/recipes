@@ -24,12 +24,21 @@ func (r *RecipeService) All() ([]domain.Recipe, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		r := domain.Recipe{}
-		if err := rows.Scan(&r.ID, &r.Name, &r.Description, &r.DurationMinutes, &r.Source, &r.Serves); err != nil {
+		recipe := domain.Recipe{}
+		if err := rows.Scan(&recipe.ID, &recipe.Name, &recipe.Description, &recipe.DurationMinutes, &recipe.Source, &recipe.Serves); err != nil {
 			return []domain.Recipe{}, nil
 		}
-		recipes = append(recipes, r)
+		recipes = append(recipes, recipe)
 	}
 
 	return recipes, nil
+}
+
+// Get will return a recipe for the id paramter passed, and
+// an additional error parameter should a problem occur.
+func (r *RecipeService) Get(id int) (domain.Recipe, error) {
+	recipe := domain.Recipe{}
+	err := r.DB.QueryRow("SELECT Id, Name, Description, DurationMinutes, Source, Serves FROM Recipes WHERE Id=?", id).Scan(
+		&recipe.ID, &recipe.Name, &recipe.Description, &recipe.DurationMinutes, &recipe.Source, &recipe.Serves)
+	return recipe, err
 }
