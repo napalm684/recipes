@@ -42,3 +42,13 @@ func (r *RecipeService) Get(id int) (domain.Recipe, error) {
 		&recipe.ID, &recipe.Name, &recipe.Description, &recipe.DurationMinutes, &recipe.Source, &recipe.Serves)
 	return recipe, err
 }
+
+// Create will create a recipe for storage in the system. An
+// error parameter is returned if a problem occurs during the
+// execution.
+func (r *RecipeService) Create(recipe domain.Recipe) error {
+	_, err := r.DB.Exec(`INSERT INTO Recipes (Name, Description, DurationMinutes, Source, Serves) 
+		VALUES ($1, $2, $3, $4, $5)`, recipe.Name, recipe.Description,
+		recipe.DurationMinutes, recipe.Source, recipe.Serves)
+	return err
+}

@@ -1,6 +1,7 @@
 package http
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -52,4 +53,26 @@ func (h *RecipeHandler) Get(w http.ResponseWriter, r *http.Request) {
 		h.renderJSON(w, recipe, 204)
 	}
 	h.renderJSON(w, recipe, 200)
+}
+
+// Create saves a new recipe in system based on the JSON payload posted
+// with the request.
+func (h *RecipeHandler) Create(w http.ResponseWriter, r *http.Request) {
+	var recipe domain.Recipe
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&recipe); err != nil {
+		renderJSON(w, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+
+	err := h.recipeService.Create(recipe)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(204)
+	return
 }
