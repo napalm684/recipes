@@ -43,14 +43,21 @@ func (r *RecipeService) Get(id int) (domain.Recipe, error) {
 	return recipe, err
 }
 
-// Create will create a recipe for storage in the system. An
+// Create will create a recipe for storage in the system and return the created record ID. An
 // error parameter is returned if a problem occurs during the
 // execution.
-func (r *RecipeService) Create(recipe domain.Recipe) error {
-	_, err := r.DB.Exec(`INSERT INTO Recipes (Name, Description, DurationMinutes, Source, Serves) 
+func (r *RecipeService) Create(recipe domain.Recipe) (int, error) {
+	result, err := r.DB.Exec(`INSERT INTO Recipes (Name, Description, DurationMinutes, Source, Serves) 
 		VALUES ($1, $2, $3, $4, $5);`, recipe.Name, recipe.Description,
 		recipe.DurationMinutes, recipe.Source, recipe.Serves)
-	return err
+
+	id, err := result.LastInsertId()
+
+	if err != nil {
+		return 0, err
+	}
+
+	return int(id), err
 }
 
 // Delete will remove a recipe matching the ID passed from storage.

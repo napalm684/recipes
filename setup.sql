@@ -3,7 +3,7 @@ sqlite3 recipes_app.db
 */
 
 CREATE TABLE Recipes(
-    Id INTEGER PRIMARY KEY,
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
     Name TEXT,
     Description TEXT,
     DurationMinutes DECIMAL(5,2),
@@ -27,7 +27,7 @@ CREATE TABLE Steps (
 );
 
 CREATE TABLE UnitsOfMeasure (
-	Id        INTEGER PRIMARY KEY,
+	Id        INTEGER PRIMARY KEY AUTOINCREMENT,
 	UnitName  TEXT,
 	ShortName TEXT
 );

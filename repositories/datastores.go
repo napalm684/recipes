@@ -9,7 +9,7 @@ import (
 type RecipeService interface {
 	All() ([]domain.Recipe, error)
 	Get(id int) (domain.Recipe, error)
-	Create(recipe domain.Recipe) error
+	Create(recipe domain.Recipe) (int, error)
 	Delete(id int) error
 	Update(domain.Recipe) error
 }
