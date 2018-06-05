@@ -66,14 +66,14 @@ func (h *RecipeHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	err := h.recipeService.Create(recipe)
+	id, err := h.recipeService.Create(recipe)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(204)
+	h.renderJSON(w, id, 200)
 	return
 }
 
