@@ -63,18 +63,23 @@ func (r *RecipeService) Delete(id int) error {
 // Update will update values in storage to match the values passed.
 // An errror parameter is returned if a problem occurs during the execution.
 func (r *RecipeService) Update(recipe domain.Recipe) error {
-	_, err := r.DB.Exec(`UPDATE Recipes 
-						 SET Name = $2,
-						 Description = $3,
-						 DurationMinutes = $4,
-						 Source = $5,
-						 Serves = $6
-						 WHERE Id = $1;`,
-		recipe.ID,
+	_, err := r.DB.Exec(`UPDATE Recipes
+						 SET Name=$1,
+						 Description=$2,
+						 DurationMinutes=$3,
+						 Source=$4,
+						 Serves=$5
+						 WHERE Id=$6;`,
 		recipe.Name,
 		recipe.Description,
 		recipe.DurationMinutes,
 		recipe.Source,
-		recipe.Serves)
+		recipe.Serves,
+		recipe.ID)
+
+	if err != nil {
+		return err
+	}
+
 	return err
 }
