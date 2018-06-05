@@ -98,3 +98,25 @@ func (h *RecipeHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(204)
 	return
 }
+
+// Update updates the recipe in the system based on the body passed in
+// the request.
+func (h *RecipeHandler) Update(w http.ResponseWriter, r *http.Request) {
+	var recipe domain.Recipe
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&recipe); err != nil {
+		renderJSON(w, "Invalid request payload", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+
+	err := h.recipeService.Update(recipe)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(204)
+	return
+}

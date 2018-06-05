@@ -17,7 +17,7 @@ type RecipeService struct {
 // occur.
 func (r *RecipeService) All() ([]domain.Recipe, error) {
 	recipes := make([]domain.Recipe, 0)
-	rows, err := r.DB.Query("SELECT Id, Name, Description, DurationMinutes, Source, Serves FROM Recipes")
+	rows, err := r.DB.Query("SELECT Id, Name, Description, DurationMinutes, Source, Serves FROM Recipes;")
 	if err != nil {
 		return []domain.Recipe{}, nil
 	}
@@ -38,7 +38,7 @@ func (r *RecipeService) All() ([]domain.Recipe, error) {
 // an additional error parameter should a problem occur.
 func (r *RecipeService) Get(id int) (domain.Recipe, error) {
 	recipe := domain.Recipe{}
-	err := r.DB.QueryRow("SELECT Id, Name, Description, DurationMinutes, Source, Serves FROM Recipes WHERE Id=?", id).Scan(
+	err := r.DB.QueryRow("SELECT Id, Name, Description, DurationMinutes, Source, Serves FROM Recipes WHERE Id=?;", id).Scan(
 		&recipe.ID, &recipe.Name, &recipe.Description, &recipe.DurationMinutes, &recipe.Source, &recipe.Serves)
 	return recipe, err
 }
@@ -48,7 +48,7 @@ func (r *RecipeService) Get(id int) (domain.Recipe, error) {
 // execution.
 func (r *RecipeService) Create(recipe domain.Recipe) (int, error) {
 	result, err := r.DB.Exec(`INSERT INTO Recipes (Name, Description, DurationMinutes, Source, Serves) 
-		VALUES ($1, $2, $3, $4, $5)`, recipe.Name, recipe.Description,
+		VALUES ($1, $2, $3, $4, $5);`, recipe.Name, recipe.Description,
 		recipe.DurationMinutes, recipe.Source, recipe.Serves)
 
 	id, err := result.LastInsertId()
@@ -63,6 +63,30 @@ func (r *RecipeService) Create(recipe domain.Recipe) (int, error) {
 // Delete will remove a recipe matching the ID passed from storage.
 // An error parameter is returned if a problem occurs during the execution.
 func (r *RecipeService) Delete(id int) error {
-	_, err := r.DB.Exec(`DELETE FROM Recipes WHERE ID = $1`, id)
+	_, err := r.DB.Exec(`DELETE FROM Recipes WHERE ID = $1;`, id)
+	return err
+}
+
+// Update will update values in storage to match the values passed.
+// An errror parameter is returned if a problem occurs during the execution.
+func (r *RecipeService) Update(recipe domain.Recipe) error {
+	_, err := r.DB.Exec(`UPDATE Recipes
+						 SET Name=$1,
+						 Description=$2,
+						 DurationMinutes=$3,
+						 Source=$4,
+						 Serves=$5
+						 WHERE Id=$6;`,
+		recipe.Name,
+		recipe.Description,
+		recipe.DurationMinutes,
+		recipe.Source,
+		recipe.Serves,
+		recipe.ID)
+
+	if err != nil {
+		return err
+	}
+
 	return err
 }
