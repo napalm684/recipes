@@ -76,3 +76,25 @@ func (h *RecipeHandler) Create(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(204)
 	return
 }
+
+// Delete removes a recipe in the system based on the ID passed in the
+// api route.
+func (h *RecipeHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.ParseInt(vars["id"], 10, 32)
+
+	if err != nil {
+		w.WriteHeader(400)
+		return
+	}
+
+	err = h.recipeService.Delete(int(id))
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(204)
+	return
+}
