@@ -45,4 +45,5 @@ func (s *server) routes() {
 	// Recipes routes
 	s.router.Handle("/recipes", ApplyMwFn(s.recipes.All)).Methods("GET")
 	s.router.Handle("/recipes/{id}", ApplyMwFn(s.recipes.Get)).Methods("GET")
+	s.router.Handle("/recipes", ApplyMwFn(s.recipes.Create)).Methods("POST")
 }
