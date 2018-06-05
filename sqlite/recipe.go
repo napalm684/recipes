@@ -52,3 +52,10 @@ func (r *RecipeService) Create(recipe domain.Recipe) error {
 		recipe.DurationMinutes, recipe.Source, recipe.Serves)
 	return err
 }
+
+// Delete will remove a recipe matching the ID passed from storage.
+// An error parameter is returned if a problem occurs during the execution.
+func (r *RecipeService) Delete(id int) error {
+	_, err := r.DB.Exec(`DELETE FROM Recipes WHERE ID = $1`, id)
+	return err
+}
