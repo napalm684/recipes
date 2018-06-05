@@ -47,4 +47,5 @@ func (s *server) routes() {
 	s.router.Handle("/recipes/{id}", ApplyMwFn(s.recipes.Get)).Methods("GET")
 	s.router.Handle("/recipes", ApplyMwFn(s.recipes.Create)).Methods("POST")
 	s.router.Handle("/recipes/{id}", ApplyMwFn(s.recipes.Delete)).Methods("DELETE")
+	s.router.Handle("/recipes", ApplyMwFn(s.recipes.Update)).Methods("PUT")
 }

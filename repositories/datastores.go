@@ -11,4 +11,5 @@ type RecipeService interface {
 	Get(id int) (domain.Recipe, error)
 	Create(recipe domain.Recipe) error
 	Delete(id int) error
+	Update(domain.Recipe) error
 }
