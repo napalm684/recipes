@@ -13,3 +13,9 @@ type RecipeService interface {
 	Delete(id int) error
 	Update(domain.Recipe) error
 }
+
+// IngredientService defines the contract
+// for ingredient store interactions.
+type IngredientService interface {
+	Get(recipeID int) ([]domain.Ingredient, error)
+}
