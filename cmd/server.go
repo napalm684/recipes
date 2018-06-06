@@ -14,7 +14,8 @@ import (
 )
 
 var (
-	recipeService repositories.RecipeService
+	recipeService     repositories.RecipeService
+	ingredientService repositories.IngredientService
 )
 
 func main() {
@@ -32,7 +33,8 @@ func main() {
 	defer db.Close()
 
 	recipeService = &sqlite.RecipeService{DB: db}
+	ingredientService = &sqlite.IngredientService{DB: db}
 
-	server := http.NewServer(recipeService)
+	server := http.NewServer(recipeService, ingredientService)
 	log.Fatal(stdhttp.ListenAndServe(":3000", server))
 }
