@@ -18,4 +18,5 @@ type RecipeService interface {
 // for ingredient store interactions.
 type IngredientService interface {
 	Get(recipeID int) ([]domain.Ingredient, error)
+	Delete(ingID int) error
 }

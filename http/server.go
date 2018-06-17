@@ -57,4 +57,5 @@ func (s *server) routes() {
 
 	// Ingredient routes
 	s.router.Handle("/ingredients/recipes/{recipeID}", ApplyMwFn(s.ingredients.Get)).Methods("GET")
+	s.router.Handle("/ingredients/{ingID}", ApplyMwFn(s.ingredients.Delete)).Methods("DELETE")
 }
