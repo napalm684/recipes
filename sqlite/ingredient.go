@@ -34,3 +34,10 @@ func (i *IngredientService) Get(recipeID int) ([]domain.Ingredient, error) {
 
 	return ingredients, nil
 }
+
+// Delete will remove an ingredient matching the ID passed from storage.
+// An error parameter is returned if a problem occurs during the execution.
+func (i *IngredientService) Delete(ingID int) error {
+	_, err := i.DB.Exec(`DELETE FROM Ingredients WHERE ID = $1;`, ingID)
+	return err
+}

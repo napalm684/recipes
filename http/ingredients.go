@@ -31,3 +31,24 @@ func (h *IngredientHandler) Get(w http.ResponseWriter, r *http.Request) {
 	}
 	h.renderJSON(w, ingredients, 200)
 }
+
+// Delete removes ingredient in system using the IngredientID passed on the route.
+func (h *IngredientHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	ingID, err := strconv.ParseInt(vars["ingID"], 10, 32)
+
+	if err != nil {
+		w.WriteHeader(400)
+		return
+	}
+
+	err = h.ingredientService.Delete(int(ingID))
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(204)
+	return
+}
