@@ -1,5 +1,9 @@
 package domain
 
+import (
+	"database/sql"
+)
+
 // Recipe represents the metadata/header data
 // associated to a recipe in the system.
 type Recipe struct {
@@ -8,6 +12,7 @@ type Recipe struct {
 	Description     string
 	DurationMinutes float32
 	Source          string
+	Serves          sql.NullInt64
 }
 
 // Ingredient represents the data describing
@@ -18,6 +23,16 @@ type Ingredient struct {
 	RecipeID int
 	Quantity float32
 	UOMID    int
+}
+
+// Step represents the data describing
+// actions to perform to make the recipe i
+// the system.
+type Step struct {
+	ID        int
+	StepText  string
+	SortOrder int
+	RecipeID  int
 }
 
 // UOM represents the unit of measure for
