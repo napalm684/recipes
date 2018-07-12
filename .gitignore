@@ -31,6 +31,9 @@
 # dependencies
 client/node_modules
 
+# css
+client/**/*.css
+
 # testing
 client/coverage
 
