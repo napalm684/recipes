@@ -19,6 +19,7 @@ type server struct {
 func NewServer(rs repositories.RecipeService, is repositories.IngredientService) http.Handler {
 	json := JSONServer(rs, is)
 	mux := http.NewServeMux()
+	mux.Handle("/", StaticServer("../client/build"))
 	mux.Handle("/api/", http.StripPrefix("/api", json))
 	return mux
 }
@@ -41,6 +42,11 @@ func JSONServer(rs repositories.RecipeService, is repositories.IngredientService
 	}
 	s.routes()
 	return &s
+}
+
+// StaticServer will construct a server to serve up static assets.
+func StaticServer(path string) http.Handler {
+	return http.FileServer(http.Dir(path))
 }
 
 func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
