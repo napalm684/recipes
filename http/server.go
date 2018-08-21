@@ -20,7 +20,7 @@ func NewServer(rs repositories.RecipeService, is repositories.IngredientService)
 	json := JSONServer(rs, is)
 	mux := http.NewServeMux()
 	mux.Handle("/", StaticServer("../client/build"))
-	mux.Handle("/api/", http.StripPrefix("/api", json))
+	mux.Handle("/api/", json)
 	return mux
 }
 
@@ -54,14 +54,16 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *server) routes() {
+	ar := s.router.PathPrefix("/api/").Subrouter()
+
 	// Recipes routes
-	s.router.Handle("/recipes", ApplyMwFn(s.recipes.All)).Methods("GET")
-	s.router.Handle("/recipes/{id}", ApplyMwFn(s.recipes.Get)).Methods("GET")
-	s.router.Handle("/recipes", ApplyMwFn(s.recipes.Create)).Methods("POST")
-	s.router.Handle("/recipes/{id}", ApplyMwFn(s.recipes.Delete)).Methods("DELETE")
-	s.router.Handle("/recipes", ApplyMwFn(s.recipes.Update)).Methods("PUT")
+	ar.Handle("/recipes", ApplyMwFn(s.recipes.All)).Methods("GET")
+	ar.Handle("/recipes/{id}", ApplyMwFn(s.recipes.Get)).Methods("GET")
+	ar.Handle("/recipes", ApplyMwFn(s.recipes.Create)).Methods("POST")
+	ar.Handle("/recipes/{id}", ApplyMwFn(s.recipes.Delete)).Methods("DELETE")
+	ar.Handle("/recipes", ApplyMwFn(s.recipes.Update)).Methods("PUT")
 
 	// Ingredient routes
-	s.router.Handle("/ingredients/recipes/{recipeID}", ApplyMwFn(s.ingredients.Get)).Methods("GET")
-	s.router.Handle("/ingredients/{ingID}", ApplyMwFn(s.ingredients.Delete)).Methods("DELETE")
+	ar.Handle("/ingredients/recipes/{recipeID}", ApplyMwFn(s.ingredients.Get)).Methods("GET")
+	ar.Handle("/ingredients/{ingID}", ApplyMwFn(s.ingredients.Delete)).Methods("DELETE")
 }
