@@ -1,5 +1,12 @@
-.recipes{
+$link-color: #000000;
+
+.recipes {
     margin: 0 auto;
     text-align: left;
     width: 90%;
+
+    &__recipe {
+        color: $link-color;
+        text-decoration: none;
+    }
 }

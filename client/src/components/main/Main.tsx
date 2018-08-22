@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
+
 import RecipeDetail from '../recipeDetail';
 import Recipes from '../recipes/Recipes';
 
-const Main = () => (
+type MainFunction = () => JSX.Element;
+
+const Main : MainFunction = () => (
     <main>
       <Switch>
         <Route exact={true} path='/' component={Recipes} />

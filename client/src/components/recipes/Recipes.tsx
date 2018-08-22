@@ -1,9 +1,12 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import './Recipes.css';
 
 import { IRecipe } from '../../entities/Recipe';
+
 import RecipeService from '../../services/RecipeService';
+
 import ListItem from '../../shared/components/list-item';
 import RecipeSearch from './recipe-search';
 
@@ -15,7 +18,7 @@ export interface IRecipesState {
 }
 
 const test: (s: string) => void = (s: string) => {
-  alert("What up");
+  alert('What up');
 };
 
 export default class Recipes extends React.Component<any, IRecipesState> {
@@ -32,7 +35,7 @@ export default class Recipes extends React.Component<any, IRecipesState> {
     this.setState(initState);
   }
 
-  public render() {
+  public render() : JSX.Element {
     return (
       <div className="recipes">
         <h1>Recipes</h1>
@@ -47,7 +50,11 @@ export default class Recipes extends React.Component<any, IRecipesState> {
 
     if(this.state.recipes.length > 0) {
       this.state.recipes.forEach(recipe => {
-        listItems.push(<ListItem key={recipe.ID} label={recipe.Name} />)
+        listItems.push(
+          <Link to={`/recipes/${recipe.ID}`} className="recipes__recipe">
+            <ListItem key={recipe.ID} label={recipe.Name} />
+          </Link>
+        );
       });
     }
 
