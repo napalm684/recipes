@@ -1,5 +1,5 @@
-import { IRecipe } from "../entities/Recipe";
-import FetchError from "../exceptions/FetchError";
+import { IRecipe } from '../entities/Recipe';
+import FetchError from '../exceptions/FetchError';
 
 const baseUrl: string = '/api/recipes';
 
