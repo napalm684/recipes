@@ -12,6 +12,22 @@ type IngredientService struct {
 	DB *sql.DB
 }
 
+// Create will create an ingredient for storage in the system and return the created record ID. An
+// error parameter is returned if a problem occurs during the execution.
+func (i *IngredientService) Create(ingredient domain.Ingredient) (int, error) {
+	result, err := i.DB.Exec(`INSERT INTO Ingredients (ItemName, RecipeID, Quantity, UOMID)
+		VALUES ($1, $2, $3, $4);`, ingredient.ItemName, ingredient.RecipeID,
+		ingredient.Quantity, ingredient.UOMID)
+
+	id, err := result.LastInsertId()
+
+	if err != nil {
+		return 0, err
+	}
+
+	return int(id), err
+}
+
 // Get will return a slice of ingredients for the recipeID parameter passed and
 // an additional error parameter should a problem occur.
 func (i *IngredientService) Get(recipeID int) ([]domain.Ingredient, error) {

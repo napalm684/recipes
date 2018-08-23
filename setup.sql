@@ -12,7 +12,7 @@ CREATE TABLE Recipes(
 );
 
 CREATE TABLE Ingredients (
-	Id       INTEGER PRIMARY KEY,
+	Id       INTEGER PRIMARY KEY AUTOINCREMENT,
 	ItemName TEXT,
 	RecipeID INTEGER,
 	Quantity DECIMAL(5,2),
