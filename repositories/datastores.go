@@ -17,6 +17,7 @@ type RecipeService interface {
 // IngredientService defines the contract
 // for ingredient store interactions.
 type IngredientService interface {
+	Create(ingredient domain.Ingredient) (int, error)
 	Get(recipeID int) ([]domain.Ingredient, error)
 	Delete(ingID int) error
 }

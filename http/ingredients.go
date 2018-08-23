@@ -1,10 +1,13 @@
 package http
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
+
+	"github.com/napalm684/recipes/domain"
 	"github.com/napalm684/recipes/repositories"
 )
 
@@ -13,6 +16,28 @@ import (
 type IngredientHandler struct {
 	ingredientService repositories.IngredientService
 	renderJSON        func(w http.ResponseWriter, data interface{}, status int)
+}
+
+// Create adds new recipes in system based on the JSON payload posted
+// with the request.
+func (h *IngredientHandler) Create(w http.ResponseWriter, r *http.Request) {
+	var ingredient domain.Ingredient
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&ingredient); err != nil {
+		renderJSON(w, "Invalid request payload", http.StatusBadGateway)
+		return
+	}
+	defer r.Body.Close()
+
+	id, err := h.ingredientService.Create(ingredient)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	h.renderJSON(w, id, 200)
+	return
 }
 
 // Get retrieves ingredients in system using the RecipeID passed on the route.

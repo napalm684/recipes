@@ -9,8 +9,8 @@ type MainFunction = () => JSX.Element;
 const Main : MainFunction = () => (
     <main>
       <Switch>
-        <Route exact={true} path='/' component={Recipes} />
-        <Route path='/recipes' component={RecipeDetail} />
+        <Route exact={true} path="/" component={Recipes} />
+        <Route path="/recipes" component={RecipeDetail} />
       </Switch>
     </main>
 );
